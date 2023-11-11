@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Toko Online Saya</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Selamat Datang di Toko bakso khas Tegal</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#">Beranda</a></li>
+            <li><a href="#">Produk</a></li>
+            <li><a href="#" id="cart-link">Keranjang Belanja</a></li>
+            <li><a href="#" id="checkout-link">Checkout</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="product">
+            <img src="img/bakso mercon.jpg" alt="Produk 1">
+            <h2>Bakso Mercon</h2>
+            <p>Harga: Rp.15.000</p> 
+            <button class="add-to-cart" data-product="1">Tambah ke Keranjang</button>
+        </section>
+
+        <section class="product">
+            <img src="img/bakso telor.jpg" alt="Produk 2">
+            <h2>Bakso Telor</h2>
+            <p>Harga: Rp12.000</p>
+            <button class="add-to-cart" data-product="2">Tambah ke Keranjang</button>
+        </section>
+
+        <section class="product">
+            <img src="img/bakso urat.jpg" alt="Produk 3">
+            <h2>Bakso Urat</h2>
+            <p>Harga: Rp12.000</p>
+            <button class="add-to-cart" data-product="3">Tambah ke Keranjang</button>
+        </section>
+
+        <section class="product">
+            <img src="img/bakso beranak.png" alt="Produk 4">
+            <h2>Bakso Beranak</h2>
+            <p>Harga: Rp15.000</p>
+            <button class="add-to-cart" data-product="4">Tambah ke Keranjang</button>
+        </section>
+
+        <section class="product">
+            <img src="img/es teh manis.jpg" alt="Produk 5">
+            <h2>Es Teh Manis</h2>
+            <p>Harga: Rp5.000</p>
+            <button class="add-to-cart" data-product="5">Tambah ke Keranjang</button>
+        </section>
+
+        <section class="product">
+            <img src="img/es jeruk peras.jpg" alt="Produk 6">
+            <h2>Es Jeruk</h2>
+            <p>Harga: Rp7.000</p>
+            <button class="add-to-cart" data-product="6">Tambah ke Keranjang</button>
+        </section>
+
+    </main>
+
+    <div id="cart-overlay" class="overlay">
+        <div id="cart">
+            <h2>Keranjang Belanja</h2>
+            <ul id="cart-items"></ul>
+            <p>Total Harga: $<span id="cart-total">0.00</span></p>
+            <button id="checkout">Checkout</button>
+            <button id="close-cart">Tutup Keranjang</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>Toko Online Aji</p>
+        <p>contact kami</p>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const products = document.querySelectorAll('.product');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartTotalElement = document.getElementById('cart-total');
+    const checkoutButton = document.getElementById('checkout');
+    const closeCartButton = document.getElementById('close-cart');
+    const overlayCart = document.getElementById('cart-overlay');
+    const cartLink = document.getElementById('cart-link');
+    const checkoutLink = document.getElementById('checkout-link');
+
+    let cartItems = [];
+
+    products.forEach(product => {
+        const addToCartButton = product.querySelector('.add-to-cart');
+        addToCartButton.addEventListener('click', () => {
+            const productId = addToCartButton.getAttribute('data-product');
+            const productName = product.querySelector('h2').textContent;
+            const productPrice = parseFloat(product.querySelector('p').textContent.replace(/[^\d.]/g, ""));
+
+            addToCart({ id: productId, name: productName, price: productPrice });
+        });
+    });
+
+    checkoutButton.addEventListener('click', () => {
+        alert('Terima kasih atas pembelian Anda!');
+        resetCart();
+
+        const nomorWhatsApp = '087891768734';
+
+        const tautanWhatsApp = `https://wa.me/${nomorWhatsApp}?text=Terima%20kasih%20atas%20pembelian%20Anda!`;
+
+        window.open(tautanWhatsApp, '_blank');
+    });
+
+    closeCartButton.addEventListener('click', () => {
+        overlayCart.style.display = 'none';
+    });
+
+    cartLink.addEventListener('click', () => {
+        displayCart();
+    });
+
+    checkoutLink.addEventListener('click', () => {
+        displayCart();
+    });
+
+function addToCart(product) {
+    cartItems.push(product);
+
+    const cartItem = document.createElement('li');
+    const formattedPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price);
+    cartItem.textContent = `${product.name} - ${formattedPrice}`;
+    cartItemsContainer.appendChild(cartItem);
+
+    updateCartTotal();
+
+    displayCart();
+}
+
+function updateCartTotal() {
+    let total = 0;
+    cartItems.forEach(item => {
+        total += item.price;
+    });
+
+    const formattedTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(total);
+    cartTotalElement.textContent = formattedTotal;
+}
+
+    function resetCart() {
+        cartItems = [];
+        cartItemsContainer.innerHTML = '';
+        cartTotalElement.textContent = 'Rp0,00';
+
+        overlayCart.style.display = 'none';
+    }
+
+    function displayCart() {
+        overlayCart.style.display = 'block';
+    }
+});
+    </script>
+</body>
+</html>
+<header>
+    <div class="social-icons">
+        <a href="https://wa.me/nomor-whatsapp-mu" target="_blank">
+            <img src="img/logo wa.png" alt="WhatsApp">
+        </a>
+        <a href="https://facebook.com/halaman-facebook-mu" target="_blank">
+            <img src="img/logo fb.webp" alt="Facebook">
+        </a>
+        <a href="https://instagram.com/profil-instagram-mu" target="_blank">
+            <img src="img/logo ig.png" alt="Instagram">
+        </a>
+    </div>
+    <body>
+    <button id="back-button" onclick="goBack()">Kembali</button>
+   
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</header>
